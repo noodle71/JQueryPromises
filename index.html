@@ -102,7 +102,7 @@
     .then(p2.stringifyResult())
     .fail(p2.error());
 
-  p3.getInitialData(p3.URL_ALL_POSTS, 'id', 'comments')
+  p3.getInitialData(p3.URL_ALL_POSTS, 'userId', 'comments')
     .then(p3.solveRequests(p3.getFromURL(p3.URL_USER_INFO), 'user'))
     .then(p3.solveRequests(p3.getFromURL(p3.URL_USER_TASKS), 'tasks'))
     .then(p3.stringifyResult())
@@ -113,6 +113,7 @@
     .then(p4.solveRequests(p4.getFromURL(p4.URL_USER_TASKS), 't'))
     .then(p4.stringifyResult())
     .fail(p4.error());
+
 </script>
 
 </body>
