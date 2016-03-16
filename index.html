@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="description" content="Final example promises">
+
+  <script src="jquery-2.1.4.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width">
+  <title>Promises</title>
+  <style>
+    .log {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .container {
+      display: inline-block;
+      width: 23%;
+      float: left;
+    }
+
+    .half {
+      display: inline-block;
+      width: 48%;
+      float: left;
+      padding-left: 5px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 800px;
+    }
+  </style>
+</head>
+<body>
+<div class="container cont1">
+  <div class="half logger"></div>
+  <div class="half">
+    <textarea class="result"></textarea>
+  </div>
+</div>
+
+<div class="container cont2">
+  <div class="half logger"></div>
+  <div class="half">
+    <textarea class="result"></textarea>
+  </div>
+</div>
+
+<div class="container cont3">
+  <div class="half logger"></div>
+  <div class="half">
+    <textarea class="result"></textarea>
+  </div>
+</div>
+
+<div class="container cont4">
+  <div class="half logger"></div>
+  <div class="half">
+    <textarea class="result"></textarea>
+  </div>
+</div>
+
+<script src="promises.js"></script>
+
+<script>
+  var p1 = new PromisesHandler({
+    'logContainer': $('.cont1 .half.logger'),
+    'resultContainer': $('.cont1 .result'),
+    'primaryKey': 'userId'
+  });
+
+  var p2 = new PromisesHandler({
+    'logContainer': $('.cont2 .half.logger'),
+    'resultContainer': $('.cont2 .result')
+  });
+
+  var p3 = new PromisesHandler({
+    'logContainer': $('.cont3 .half.logger'),
+    'resultContainer': $('.cont3 .result')
+  });
+
+  var p4 = new PromisesHandler({
+    'logContainer': $('.cont4 .half.logger'),
+    'resultContainer': $('.cont4 .result'),
+    'map': {'t': [], 'c': [], 'u': []}
+  });
+
+  p1.getInitialData(p1.URL_ALL_TASKS, 'userId', 'tasks')
+    .then(p1.solveRequests(p1.getFromURL(p1.URL_USER_POSTS), 'comments'))
+    .then(p1.solveRequests(p1.getFromURL(p1.URL_USER_INFO), 'user'))
+    .then(p1.stringifyResult())
+    .fail(p1.error());
+
+  p2.getInitialData(p2.URL_ALL_USER, 'id', 'user')
+    .then(p2.solveRequests(p2.getFromURL(p2.URL_USER_TASKS), 'tasks'))
+    .then(p2.solveRequests(p2.getFromURL(p2.URL_USER_POSTS), 'comments'))
+    .then(p2.stringifyResult())
+    .fail(p2.error());
+
+  p3.getInitialData(p3.URL_ALL_POSTS, 'id', 'comments')
+    .then(p3.solveRequests(p3.getFromURL(p3.URL_USER_INFO), 'user'))
+    .then(p3.solveRequests(p3.getFromURL(p3.URL_USER_TASKS), 'tasks'))
+    .then(p3.stringifyResult())
+    .fail(p3.error());
+
+  p4.getInitialData(p4.URL_ALL_USER, 'id', 'u')
+    .then(p4.solveRequests(p4.getFromURL(p4.URL_USER_POSTS), 'c'))
+    .then(p4.solveRequests(p4.getFromURL(p4.URL_USER_TASKS), 't'))
+    .then(p4.stringifyResult())
+    .fail(p4.error());
+</script>
+
+</body>
+</html>
